@@ -40,8 +40,8 @@ public class Command {
             System.out.print(Constants.HELP.getDesc());
             return;
         }
-        this.verb = split.get(1).replace("-", "");
-        if(split.size() > 2){
+        if(split.size() >= 2){
+            this.verb = split.get(1).replace("-", "");
             for(int i=2; i< split.size(); i++){
                 this.options.add(split.get(i).replace("-", ""));
             }
@@ -49,7 +49,7 @@ public class Command {
     }
 
     public static void exit(Account account){
-        account.save("account.txt");
+        account.save();
         System.exit(0);
     }
 }

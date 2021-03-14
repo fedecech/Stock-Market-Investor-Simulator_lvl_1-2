@@ -30,7 +30,7 @@ public class Market {
     public Stock getStockByTicker(String key){
         List<Stock> stream = this.stocksAvailable.stream().filter(s -> s.getTicker().equals(key)).collect(Collectors.toList());
 
-        if (stream == null ){
+        if (stream.isEmpty()){
             System.out.println("Stock does not exists");
             return null;
         }

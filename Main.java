@@ -11,67 +11,107 @@ public class Main
         stockAvaiable.add(new Stock("Apple", "AAPL", 300.0));
         stockAvaiable.add(new Stock("Tesla", "TSLA", 670));
 
-        Account user = start();
+        Account account = authenticate();
         printOptions();
         print("Enter command: ");
 
-        Market market= new Market(stockAvaiable);
-        market.open();
-
+        Market market = new Market(stockAvaiable);
         String input = new Scanner(System.in).nextLine();
-
         Command command = new Command(input);
 
         while(!input.equals(EXIT)){
-
-            if (command.getSubject().equals(user.getUsername())){
-                if(command.getVerb().equals(Constants.PRINT.getFull()) || command.getVerb().equals(Constants.PRINT.getAbbr())){
-                    ((User)user).print(command.getOptions());
-                }else{
-                    print("Invalid verb\n");
-                }
-            }else{
-                if(command.getVerb().equals(Constants.PRINT.getFull()) || command.getVerb().equals(Constants.PRINT.getAbbr())){
-                    market.getStockByTicker(command.getSubject()).print(command.getOptions());
-                }else {
-                    print("Enter amount: ");
-                    int amount = new Scanner(System.in).nextInt();
-                    if(command.getVerb().equals(Constants.BUY.getFull()) || command.getVerb().equals(Constants.BUY.getAbbr())){
-                        ((User)user).buyStock(market.getStockByTicker(command.getSubject()), amount);
-                    }else if (command.getVerb().equals(Constants.SELL.getFull()) || command.getVerb().equals(Constants.SELL.getAbbr())){
-                        ((User)user).sellStock(market.getStockByTicker(command.getSubject()), amount);
+            if(account instanceof User){
+                //market.open();
+                if (command.getSubject().equals(account.getUsername())){
+                    if(command.getVerb().equals(Constants.PRINT.getFull()) || command.getVerb().equals(Constants.PRINT.getAbbr())){
+                        ((User)account).print(command.getOptions());
                     }else{
                         print("Invalid verb\n");
                     }
+                }else{
+                    if(command.getVerb().equals(Constants.PRINT.getFull()) || command.getVerb().equals(Constants.PRINT.getAbbr())){
+                        market.getStockByTicker(command.getSubject()).print(command.getOptions());
+                    }else {
+                        print("Enter amount: ");
+                        int amount = new Scanner(System.in).nextInt();
+                        if(command.getVerb().equals(Constants.BUY.getFull()) || command.getVerb().equals(Constants.BUY.getAbbr())){
+                            ((User)account).buyStock(market.getStockByTicker(command.getSubject()), amount);
+                        }else if (command.getVerb().equals(Constants.SELL.getFull()) || command.getVerb().equals(Constants.SELL.getAbbr())){
+                            ((User)account).sellStock(market.getStockByTicker(command.getSubject()), amount);
+                        }else{
+                            print("Invalid verb\n");
+                        }
+                    }
+                }
+            }else if (account instanceof Admin){
+                if(command.getSubject().equals(account.getUsername())){
+                    if(command.getVerb().equals(Constants.DELETE.getFull()) || command.getVerb().equals(Constants.DELETE.getAbbr())){
+                        print("Enter the username of the account you want to delete");
+                        String username = new Scanner(System.in).nextLine();
+                        ((Admin)account).deleteAccount(username);
+                    }
                 }
             }
+
 
             print("Enter command: ");
             input = new Scanner(System.in).nextLine();
             command = new Command(input);
         }
 
-        Command.exit(user);
+        Command.exit(account);
     }
 
-    // Start new Timer to change prices randomly and returns a new User
-    //
-    public static Account start() throws FileNotFoundException {
-        print("WELCOME TO THE STOCK MARKET INVESTOR SIMULATOR\n");
-        Account user = null;
-
-        if(new File("account.txt").exists()){
-            user = new User(new FileInputStream("account.txt"));
+    public static Account authenticate() throws FileNotFoundException {
+        println("WELCOME TO THE STOCK MARKET INVESTOR SIMULATOR\n");
+        Account account = null;
+        Scanner scanner = new Scanner(System.in);
+        
+        print("Enter your username: ");
+        String username = scanner.nextLine();
+        
+        if(new File(username + ".txt").exists()){
+            // signin
+            account = Account.retrieve(username);
+            print("Enter your password: ");
+            String password = scanner.nextLine();
+            while(!account.getPassword().equals(password)){
+                print("Wrong password... try again: ");
+                password = scanner.nextLine();
+            }
+            println("Successfuly signed in.");
         }else{
-            print("Enter your username: ");
-            String username = new Scanner(System.in).nextLine();
-            user = new User(username);
+            // sign up
+            if(isAdmin(username)){
+                print("Enter the key to create an admin account: ");
+                String key = scanner.nextLine();
+                if(key.equals(Constants.ADMIN_KEY.getFull())){
+                    print("Create a new password for your account: ");
+                    String newPassword = scanner.nextLine();
+                    account = new Admin(username, newPassword);
+                }else{
+                    println("ACCESS DENIED...EXITING!");
+                    System.exit(0);
+                }
+            }else{
+                print("Create a password for your account: ");
+                String password = scanner.nextLine();
+                account = new User(username, password);
+                println("New Account created!");
+            }
         }
-        return user;
+        return account;
     }
-
+    
+    public static boolean isAdmin(String username){
+        return username.contains(Constants.ADMIN_SUFFIX.getFull());
+    }
     public static void print(String msg){
         System.out.print(msg);
+    }
+    
+    public static void println(String msg){
+        System.out.println(msg);
     }
 
     public static void printOptions(){

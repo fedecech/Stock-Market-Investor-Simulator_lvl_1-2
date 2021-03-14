@@ -3,21 +3,15 @@ import java.util.HashMap;
 
 public class Admin extends Account
 {
-    public Admin(FileInputStream file)
-    {
-        Account account = retrieve(file);
-        super.setSettings(account.getSettings());
-        super.setUsername(account.getUsername());
-    }
 
-    public Admin(String username, HashMap<String, String> settings){
-        super(username, settings);
+    public Admin(String username, String password){
+        super(username, password, new HashMap<String, String>());
     }
 
     @Override
-    void save(String fileName){
+    public void save(){
         try{
-            FileOutputStream file = new FileOutputStream(fileName);
+            FileOutputStream file = new FileOutputStream(super.getUsername() + ".txt");
             ObjectOutputStream out = new ObjectOutputStream(file);
 
             out.writeObject(this);
@@ -29,21 +23,13 @@ public class Admin extends Account
             System.out.println("IOException is caught");
         }
     }
-
-    @Override
-    Account retrieve(FileInputStream file) {
-        Account acc = null;
-
-        try{
-            ObjectInputStream in = new ObjectInputStream(file);
-
-            acc = (User)in.readObject();
-
-            in.close();
-            file.close();
-        }catch (IOException | ClassNotFoundException e){
-
-        }
-        return acc;
+    
+    public void deleteAccount(String username){
+        File file = new File(username + ".txt");
+        if (file.delete()) { 
+          System.out.println("Account deleted: " + username);
+        } else {
+          System.out.println("Failed to delete the account: "  + username);
+        } 
     }
 }

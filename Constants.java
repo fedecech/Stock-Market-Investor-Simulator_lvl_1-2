@@ -4,7 +4,11 @@ public enum Constants {
     PRINT("print", "p", ""),
     BUY("buy", "b", ""),
     SELL("sell", "s", ""),
-    HELP("help", "h", "");
+    HELP("help", "h", ""),
+    ADMIN_KEY("admin123", "", ""),
+    ADMIN_SUFFIX(".admin@admin", "", ""),
+    DELETE("delete", "d", "");
+    
 
 
 

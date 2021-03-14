@@ -6,26 +6,18 @@ public class User extends Account
 {
     private ArrayList<Stock> myStocks;
     private double balance;
-
-
-    public User(FileInputStream file){
-        Account account = retrieve(file);
-//        super.setSettings(account.getSettings());
-        super.setUsername(account.getUsername());
-        this.myStocks = ((User)account).getMyStocks();
-        this.balance = ((User)account).getBalance();
-    }
-    public User(String username )
+    
+    public User(String username, String password)
     {
-        super(username, new HashMap<String, String>());
+        super(username, password, new HashMap<String, String>());
         this.myStocks = new ArrayList<>();
         this.balance = 1000;
     }
 
     @Override
-    void save(String fileName){
+    public void save(){
         try{
-            FileOutputStream file = new FileOutputStream(fileName);
+            FileOutputStream file = new FileOutputStream(super.getUsername() + ".txt");
             ObjectOutputStream out = new ObjectOutputStream(file);
 
             out.writeObject(this);
@@ -36,23 +28,6 @@ public class User extends Account
         }catch(IOException e){
             e.printStackTrace();
         }
-    }
-
-    @Override
-    Account retrieve(FileInputStream file) {
-        Account acc = null;
-
-        try{
-            ObjectInputStream in = new ObjectInputStream(file);
-
-            acc = (User)in.readObject();
-
-            in.close();
-            file.close();
-        }catch (IOException | ClassNotFoundException e){
-
-        }
-        return acc;
     }
 
     public void buyStock(Stock stock, int amount){
@@ -99,7 +74,6 @@ public class User extends Account
             for (Map.Entry<String, Integer> map: stocksNumber.entrySet()){
                 System.out.println(map.getKey() + ": \nTotal stocks: " + map.getValue() + "\nTotal value: ");
             }
-
         }
         System.out.println("*".repeat(50));
     }
