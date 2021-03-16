@@ -28,11 +28,13 @@ final public class Admin extends Account
         this.KEY = generateRandomKey(20);
     }
 
+    // save  admin to file
     @Override
     public void save(){
         super.save(this);
     }
-    
+
+    // prints admin info
     @Override
     public void print(){
         System.out.println("*".repeat(50));
@@ -41,7 +43,7 @@ final public class Admin extends Account
         System.out.println("*".repeat(50));
     }
     
-    
+    // delete account with username passed as argument
     public void deleteAccount(String username){
         File file = new File(username + Constants.FILE_ACC_EXTENTION.getFull());
         if (file.delete()) {
@@ -51,22 +53,26 @@ final public class Admin extends Account
         } 
     }
 
+    // saves account passed to file
     public void addAccount(Account account){
         account.save();
     }
-    
+
+    // add asset to market
     public void addAsset(Market market, Asset asset){
         market.addAsset(asset);
         System.out.println("You added the asset " + asset.getTicker() + " to the market");
     }
 
+    // delete asset passed from market
     public void deleteAsset(Market market, Asset asset){
         market.removeAsset(asset);
         System.out.println("You removed the asset " + asset.getTicker() + " from the market");
     }
-    
+
+    // creates random key when class is initialised
     private String generateRandomKey(int length){
-        Random r = new java.util.Random ();
+        Random r = new Random ();
         return Long.toString (r.nextLong () & Long.MAX_VALUE, length);
     }
     

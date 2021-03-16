@@ -9,6 +9,7 @@ class Stock extends Asset
         this.companyOwner = companyOwner;
     }
 
+    // print stock info
     @Override
     public void print() {
         super.print();
@@ -16,8 +17,10 @@ class Stock extends Asset
         System.out.println("*".repeat(100));
     }
 
+    // variate price
+    // less volatility then crypto (+2)
     @Override
     public void variatePrice(double variability, boolean isPrint) {
-        super.variatePrice(2, isPrint);
+        super.variatePrice(variability + 2, isPrint);
     }
 }

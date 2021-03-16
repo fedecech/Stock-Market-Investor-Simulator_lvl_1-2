@@ -1,5 +1,14 @@
 import java.io.*;
 
+/***************************************************************************************************
+     Account is the abstract class extended by Admin and Account
+     Account has 2 proprieties called username and password:
+     Account can:
+        - be saved and this method is overridden by both Admin and User
+        - an instance of account can sign in
+        - be retrieved thanks to the static method retrieve, which based on the file name it
+          creates return an instance of User or Admin but with type Account
+ ***************************************************************************************************/
 abstract public class Account implements Serializable, Savable, Printable
 {
     private String username;
@@ -11,6 +20,7 @@ abstract public class Account implements Serializable, Savable, Printable
         this.password = password;
     }
 
+    // save account to file
     public void save(Object object){
         try{
             FileOutputStream file = new FileOutputStream(this.username + Constants.FILE_ACC_EXTENTION.getFull());
@@ -26,6 +36,7 @@ abstract public class Account implements Serializable, Savable, Printable
         }
     }
 
+    // check if password is equals to object password
     public boolean signIn(String password){
         if (this.password.equals(password)){
             return true;
@@ -33,10 +44,12 @@ abstract public class Account implements Serializable, Savable, Printable
         return false;
     }
 
+    // print username in capital letters
     public void print(){
         System.out.println("Username: " + this.username.toUpperCase());
     }
 
+    // retrieve account from file
     public static Account retrieve(String username){
         Account acc = null;
         try{

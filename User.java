@@ -1,5 +1,14 @@
 import java.util.*;
 
+/***************************************************************************************************
+     User is a subclass of Account
+     User has 2 proprieties called muAssets and balaance:
+     User overrides:
+         - save
+         - print
+     User can buy and sell assets
+ ***************************************************************************************************/
+
 public class User extends Account
 {
     private ArrayList<Asset> myAssets;
@@ -12,11 +21,13 @@ public class User extends Account
         this.balance = 1000;
     }
 
+    // save user to file
     @Override
     public void save(){
         super.save(this);
     }
 
+    // buy assets
     public void buy(Asset asset, int amount){
         if(this.balance > (asset.getCurrentPrice() * amount)){
             for(int i=0; i<amount; i++){
@@ -30,6 +41,7 @@ public class User extends Account
         System.out.println("*".repeat(50));
     }
 
+    // sell assets
     public void sell(Asset asset, int amount){
         int size = this.myAssets.size();
         for(int i=0; i<amount; i++){
@@ -39,11 +51,12 @@ public class User extends Account
         if(size > this.myAssets.size()){
             System.out.println("You sold " + amount + " assets of " + asset.getCompany());
         }else{
-            System.out.println("You do not have ay asset of " + asset.getCompany());
+            System.out.println("You do not have any asset of " + asset.getCompany());
         }
         System.out.println("*".repeat(50));
     }
 
+    // print user
     @Override
     public void print(){
         double total = 0;

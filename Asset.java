@@ -28,10 +28,7 @@ public class Asset implements Serializable, Printable {
         return this.currentPrice;
     }
 
-    public HashMap<Date, Double> getPricesHistory(){
-        return this.pricesHistory;
-    }
-
+    // print asset
     public void print(){
         System.out.print(
                 "*".repeat(100) + "\n" + "- " + this.ticker + " (" +
@@ -44,6 +41,7 @@ public class Asset implements Serializable, Printable {
         }
     }
 
+    // changes price and add old price to prices history
     public void variatePrice(double variability, boolean isPrint){
         double max = (double)(this.currentPrice + variability);
         double min = (double)(this.currentPrice - variability);
@@ -60,6 +58,7 @@ public class Asset implements Serializable, Printable {
         }
     }
 
+    // updates price
     private void updatePrice(double newPrice){
         this.pricesHistory.put(new Date(), this.currentPrice);
         this.currentPrice = newPrice;

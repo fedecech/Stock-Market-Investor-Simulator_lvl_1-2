@@ -1,3 +1,4 @@
+// constants used in all program
 public enum Constants {
 
     // file const
