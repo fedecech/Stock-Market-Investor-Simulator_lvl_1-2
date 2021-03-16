@@ -1,96 +1,72 @@
-import java.nio.file.Paths;
 import java.util.*;
-import java.io.*;
 
 public class User extends Account
 {
-    private ArrayList<Stock> myStocks;
+    private ArrayList<Asset> myAssets;
     private double balance;
     
     public User(String username, String password)
     {
-        super(username, password, new HashMap<String, String>());
-        this.myStocks = new ArrayList<>();
+        super(username, password);
+        this.myAssets = new ArrayList<>();
         this.balance = 1000;
     }
 
     @Override
     public void save(){
-        try{
-            FileOutputStream file = new FileOutputStream(super.getUsername() + ".txt");
-            ObjectOutputStream out = new ObjectOutputStream(file);
-
-            out.writeObject(this);
-
-            out.close();
-            file.close();
-
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+        super.save(this);
     }
 
-    public void buyStock(Stock stock, int amount){
-        if(this.balance > (stock.getCurrentPrice() * amount)){
+    public void buy(Asset asset, int amount){
+        if(this.balance > (asset.getCurrentPrice() * amount)){
             for(int i=0; i<amount; i++){
-                this.myStocks.add(stock);
-                this.balance -= stock.getCurrentPrice();
+                this.myAssets.add(asset);
+                this.balance -= asset.getCurrentPrice();
             }
-            System.out.println("You bought " + amount + " stocks of " + stock.getCompany());
+            System.out.println("You bought " + amount + " assets of " + asset.getCompany());
         }else{
-            System.out.println("You do not have enought money");
+            System.out.println("You do not have enough money");
         }
         System.out.println("*".repeat(50));
     }
 
-    public void sellStock(Stock stock, int amount){
+    public void sell(Asset asset, int amount){
+        int size = this.myAssets.size();
         for(int i=0; i<amount; i++){
-            this.myStocks.remove(stock);
-            this.balance += stock.getCurrentPrice();
+            this.myAssets.remove(asset);
+            this.balance += asset.getCurrentPrice();
         }
-        System.out.println("You sold " + amount + " stocks of " + stock.getCompany());
+        if(size > this.myAssets.size()){
+            System.out.println("You sold " + amount + " assets of " + asset.getCompany());
+        }else{
+            System.out.println("You do not have ay asset of " + asset.getCompany());
+        }
         System.out.println("*".repeat(50));
     }
 
-    public void print(ArrayList<String> options){
+    @Override
+    public void print(){
         double total = 0;
-        for (Stock stock: this.myStocks){
-            total += stock.getCurrentPrice();
+        for (Asset asset: this.myAssets){
+            total += asset.getCurrentPrice();
         }
-        System.out.print(
-                "*".repeat(50) + "\n" + super.getUsername().toUpperCase()
-                        + "\n"  + "Balance: " + this.balance + "\nTotal stocks: " + this.myStocks.size() + " (Value: " +
-                        total + ")" +"\n"
-        );
-
-        if(options.contains(Constants.EXTENDED.getFull()) || options.contains(Constants.EXTENDED.getAbbr())){
-            HashMap<String, Integer> stocksNumber = new HashMap<>();
-            for (Stock s: this.myStocks){
-                String ticker = s.getTicker();
-                int count = (int) this.myStocks.stream().filter(stock -> stock.getTicker().equals(ticker)).count();
-                stocksNumber.put(ticker, count);
-            }
-
-            for (Map.Entry<String, Integer> map: stocksNumber.entrySet()){
-                System.out.println(map.getKey() + ": \nTotal stocks: " + map.getValue() + "\nTotal value: ");
-            }
+        System.out.println("*".repeat(50));
+        super.print();
+        System.out.println("Balance: " + this.balance);
+        System.out.println("Total assets: " + this.myAssets.size() + " (Value: " + total + ")");
+        
+        HashMap<String, Integer> assetsNumber = new HashMap<>();
+        for (Asset s: this.myAssets){
+            String ticker = s.getTicker();
+            int count = (int) this.myAssets.stream().filter(asset -> asset.getTicker().equals(ticker)).count();
+            assetsNumber.put(ticker, count);
         }
+
+        for (Map.Entry<String, Integer> map: assetsNumber.entrySet()){
+            System.out.println(map.getKey() + ": \nTotal assets: " + map.getValue() + "\nTotal value: ");
+        }
+
         System.out.println("*".repeat(50));
     }
 
-    public ArrayList<Stock> getMyStocks() {
-        return myStocks;
-    }
-
-    public void setMyStocks(ArrayList<Stock> myStocks) {
-        this.myStocks = myStocks;
-    }
-
-    public double getBalance() {
-        return balance;
-    }
-
-    public void setBalance(double balance) {
-        this.balance = balance;
-    }
 }

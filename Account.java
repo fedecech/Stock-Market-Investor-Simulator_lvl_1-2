@@ -1,45 +1,46 @@
-import java.util.*;
 import java.io.*;
 
-abstract public class Account implements Serializable
+abstract public class Account implements Serializable, Savable, Printable
 {
     private String username;
     private String password;
-    private HashMap<String, String> settings;
 
-    public Account(String username, String password, HashMap<String, String> settings)
+    public Account(String username, String password)
     {
         this.username = username;
         this.password = password;
-        this.settings = settings;
     }
 
-    public String getUsername(){
-        return this.username;
-    }
-    
-    public String getPassword(){
-        return this.password;
+    public void save(Object object){
+        try{
+            FileOutputStream file = new FileOutputStream(this.username + Constants.FILE_ACC_EXTENTION.getFull());
+            ObjectOutputStream out = new ObjectOutputStream(file);
+
+            out.writeObject(object);
+
+            out.close();
+            file.close();
+
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
-    public HashMap<String, String> getSettings() {
-        return settings;
+    public boolean signIn(String password){
+        if (this.password.equals(password)){
+            return true;
+        }
+        return false;
     }
 
-    public void setSettings(HashMap<String, String> settings) {
-        this.settings = settings;
+    public void print(){
+        System.out.println("Username: " + this.username.toUpperCase());
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    abstract public void save();
 
     public static Account retrieve(String username){
         Account acc = null;
         try{
-            FileInputStream file = new FileInputStream(username + ".txt");
+            FileInputStream file = new FileInputStream(username + Constants.FILE_ACC_EXTENTION.getFull());
             ObjectInputStream in = new ObjectInputStream(file);
 
             acc = username.contains(Constants.ADMIN_SUFFIX.getFull()) ? (Admin) in.readObject() : (User) in.readObject() ;
@@ -52,3 +53,4 @@ abstract public class Account implements Serializable
         return acc;
     }
 }
+

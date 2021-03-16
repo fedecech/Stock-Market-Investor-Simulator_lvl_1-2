@@ -1,66 +1,23 @@
-import java.io.Serializable;
-import java.util.*;
 
-class Stock implements Serializable
+class Stock extends Asset
 {
-    private String company;
-    private String ticker;
-    private double currentPrice;
-    private HashMap<Date, Double> pricesHistory;
+    private String companyOwner;
 
-    public Stock(String company, String ticker, double currentPrice)
+    public Stock(String company, String ticker, double currentPrice, String companyOwner)
     {
-        this.company = company;
-        this.ticker = ticker;
-        this.currentPrice = currentPrice;
-        this.pricesHistory = new HashMap<Date,Double>();
+        super(company, ticker, currentPrice);
+        this.companyOwner = companyOwner;
     }
 
-    public String getTicker(){
-        return this.ticker;
-    }
-
-    public String getCompany(){
-        return this.company;
-    }
-
-    public double getCurrentPrice(){
-        return this.currentPrice;
-    }
-
-    public HashMap<Date, Double> getPricesHistory(){
-        return this.pricesHistory;
-    }
-
-    public void print(ArrayList<String> options){
-        System.out.print(
-                "*".repeat(100) + "\n" + "- " + this.ticker + " (" +
-                        this.company + ")\n" + "- Current Price: " + this.currentPrice + "\n"
-        );
-
-        if(options.contains(Constants.EXTENDED.getFull()) || options.contains(Constants.EXTENDED.getAbbr())){
-            System.out.println("- Prices History:");
-            for(Map.Entry<Date, Double> entry: this.pricesHistory.entrySet()){
-                System.out.println("\tDate: " + entry.getKey() + " Price: " + entry.getValue());
-            }
-        }
+    @Override
+    public void print() {
+        super.print();
+        System.out.println("Company owner: " + this.companyOwner);
         System.out.println("*".repeat(100));
     }
 
-    public void variatePrice(double variability){
-        double max = (double)(this.currentPrice + variability);
-        double min = (double)(this.currentPrice - variability);
-        double newPrice = (double) min + (Math.random() * (max - min));
-        this.pricesHistory.put(new Date(), this.currentPrice);
-        System.out.println( "\n" + "*".repeat(75));
-        System.out.println(this.ticker + " price changed from "
-                + this.currentPrice + " to " + newPrice);
-        System.out.println("*".repeat(75));
-        this.currentPrice = newPrice;
-    }
-
-    public void updatePrice(double price){
-        this.pricesHistory.put(new Date(), this.currentPrice);
-        this.currentPrice = price;
+    @Override
+    public void variatePrice(double variability, boolean isPrint) {
+        super.variatePrice(2, isPrint);
     }
 }

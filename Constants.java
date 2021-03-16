@@ -1,33 +1,19 @@
 public enum Constants {
-    EXTENDED("extended", "e", ""),
-    AUTO("auto", "a", ""),
-    PRINT("print", "p", ""),
-    BUY("buy", "b", ""),
-    SELL("sell", "s", ""),
-    HELP("help", "h", ""),
-    ADMIN_KEY("admin123", "", ""),
-    ADMIN_SUFFIX(".admin@admin", "", ""),
-    DELETE("delete", "d", "");
-    
 
+    // file const
+    MARKET_FILE_NAME("stock_market"),
+    FILE_ACC_EXTENTION(".account"),
+    FILE_MARK_EXTENTION(".market"),
 
+    // admin const
+    ADMIN_KEY("admin123"),
+    ADMIN_SUFFIX(".admin");
 
     private final String full;
-    private final String abbr;
-    private final String desc;
 
-    private Constants(String full, String abbr, String desc) {
+
+    private Constants(String full) {
         this.full = full;
-        this.abbr = abbr;
-        this.desc = desc;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public String getAbbr() {
-        return abbr;
     }
 
     public String getFull() {
