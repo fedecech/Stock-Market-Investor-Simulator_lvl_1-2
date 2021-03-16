@@ -43,15 +43,20 @@ public class User extends Account
 
     // sell assets
     public void sell(Asset asset, int amount){
-        int size = this.myAssets.size();
-        for(int i=0; i<amount; i++){
-            this.myAssets.remove(asset);
-            this.balance += asset.getCurrentPrice();
+        int count = 0;
+        for(Asset a: this.myAssets){
+            if(a.getTicker().equals(asset.getTicker())){
+                count++;
+            }
         }
-        if(size > this.myAssets.size()){
+        if(count >= amount){
+            for(int i=0; i<amount; i++){
+                this.myAssets.remove(asset);
+                this.balance += asset.getCurrentPrice();
+            }
             System.out.println("You sold " + amount + " assets of " + asset.getCompany());
         }else{
-            System.out.println("You do not have any asset of " + asset.getCompany());
+            System.out.println("You only have " + count +" asset/s of " + asset.getCompany());
         }
         System.out.println("*".repeat(50));
     }

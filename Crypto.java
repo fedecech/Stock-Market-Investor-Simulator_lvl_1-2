@@ -24,4 +24,5 @@ public class Crypto extends Asset {
     public void variatePrice(double variability, boolean isPrint) {
         super.variatePrice(variability + 10, isPrint);
     }
+        
 }

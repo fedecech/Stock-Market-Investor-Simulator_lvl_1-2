@@ -8,10 +8,10 @@ public class Main
         // list of stock that can be bought
         ArrayList<Asset> stockAvailable = new ArrayList<>();
         stockAvailable.add(new Crypto("Bitcoin", "BTC", 50000,5));
-        stockAvailable.add(new Crypto("Ethereum", "ETH", 50000,5));
-        stockAvailable.add(new Crypto("Ripple", "XRP", 50000,4));
-        stockAvailable.add(new Crypto("Bitcoin Cash", "BCH", 50000,3));
-        stockAvailable.add(new Crypto("Litecoin", "LTC", 50000,3));
+        stockAvailable.add(new Crypto("Ethereum", "ETH", 1700,2));
+        stockAvailable.add(new Crypto("Ripple", "XRP", 2000,4));
+        stockAvailable.add(new Crypto("Bitcoin Cash", "BCH", 2233,3));
+        stockAvailable.add(new Crypto("Litecoin", "LTC", 333,1));
 
         stockAvailable.add(new Stock("Apple", "AAPL", 300.0, "Steve Jobs"));
         stockAvailable.add(new Stock("Tesla", "TSLA", 300.0, "Elon Mask"));

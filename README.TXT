@@ -19,7 +19,7 @@ Subclass [User] extends the superclass by adding at least one property and its g
 
 These/this new properties/property are used by the subclass in the following way: [myAssets is used to store the assets bought by the user (lines: 34, 46, 48, 51, 63, 69, 72, 74). Balance is used to store the amount of money the user has (lines: 32, 35, 49, 68)]
 
-Subclass [User] extends the superclass by overriding the following methods (there must be at least one): [save (lines: 25-28), print (lines: 61-83)]
+Subclass [User] extends the superclass by overriding the following methods (there must be at least one): [save (lines: 25-28), print (lines: 66-88)]
 
 These overridden methods are used in the working code in the following places: [Menu.java (lines: 58 and 85)]
 
@@ -45,11 +45,11 @@ Example 1.
 The substitution principle can be seen in use in [Main (line: 21)]. The name of the superclass used in this example is [Account] and the subclasses used are [User, Admin].
 
 !(IMPORTANT)!
-The method authenticate is calling other 2 methods: SignIn and SignUp. SignIn is calling the static method retrieve in the class Account that could either return a User or an Admin depending on the file extension. In the same way SignUp can return an instance of User or an instance of Admin. For this reason, when all methods have been resolved the final result is the same as: Account account = new User(...) or Account account = new Admin(...).
+The method authenticate is calling 2 other methods: SignIn and SignUp. SignIn is calling the static method retrieve in the class Account that could either return a User or an Admin depending on the file extension. In the same way SignUp can return an instance of User or an instance of Admin. For this reason, when all methods have been resolved the final result is the same as: Account account = new User(...) or Account account = new Admin(...).
 
-Late dynamic binding can be seen in [Menu (line: 77)].
+Late dynamic binding can be seen in [Menu (line: 85)].
 
-[Both admin and user can be printed but they need to add theyre own implementation (because of the different proprieties they have), for this reason, polymorphism is necessary. So when calling account.print() based on the instance of the class two different behaviours are shown]
+[Both admin and user can be printed but they need to add their own implementation (because of the different proprieties they have), for this reason, polymorphism is necessary. So when calling account.print() based on the instance of the class two different behaviours are shown]
 
 Example 2.
 
